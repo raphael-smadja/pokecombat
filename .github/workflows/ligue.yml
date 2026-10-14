@@ -1,0 +1,67 @@
+name: Ligue
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  # Un run sur main remplit le cache Maven partagé par toutes les PR (le cache d'une PR ne sert qu'à elle).
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Un nouveau push annule le run précédent de la même PR : la CI reste courte en live.
+concurrency:
+  group: ligue-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+      - run: ./mvnw -B -ntp compile
+
+  tests:
+    name: Tests
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+      - run: ./mvnw -B -ntp test
+
+  mutation:
+    name: Mutation
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+      - name: PIT sur le package combat (rouge sous 80 %)
+        run: ./mvnw -B -ntp test-compile org.pitest:pitest-maven:mutationCoverage
+      - name: Pokédex des mutants
+        if: ${{ !cancelled() }}
+        run: python3 scripts/resume_pit.py >> "$GITHUB_STEP_SUMMARY"
+      # Le rapport est publié même quand le badge est rouge : la review IA en a besoin.
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: pit-reports
+          path: target/pit-reports
+          if-no-files-found: ignore
