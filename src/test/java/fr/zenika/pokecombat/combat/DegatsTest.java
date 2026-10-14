@@ -1,6 +1,9 @@
 package fr.zenika.pokecombat.combat;
 
 import static fr.zenika.pokecombat.combat.FaussesDonneesPokemon.BULBIZARRE;
+import static fr.zenika.pokecombat.combat.FaussesDonneesPokemon.CHARGE;
+import static fr.zenika.pokecombat.combat.FaussesDonneesPokemon.CRU_AILES;
+import static fr.zenika.pokecombat.combat.FaussesDonneesPokemon.DRACAUFEU;
 import static fr.zenika.pokecombat.combat.FaussesDonneesPokemon.ECLAIR;
 import static fr.zenika.pokecombat.combat.FaussesDonneesPokemon.FLAMMECHE;
 import static fr.zenika.pokecombat.combat.FaussesDonneesPokemon.FOUET_LIANES;
@@ -55,5 +58,45 @@ class DegatsTest {
 
         assertEquals(240, resultat.degats());
         assertEquals("C'est super efficace !", resultat.message());
+    }
+
+    @Test
+    void fouetLianesSurDracaufeuNestPasTresEfficace() {
+        ResultatAttaque resultat = degats.calculer(BULBIZARRE, FOUET_LIANES, DRACAUFEU);
+
+        assertEquals(16, resultat.degats());
+        assertEquals("Ce n'est pas très efficace…", resultat.message());
+    }
+
+    @Test
+    void eclairSurRacaillouNaAucunEffet() {
+        ResultatAttaque resultat = degats.calculer(PIKACHU, ECLAIR, RACAILLOU);
+
+        assertEquals(0, resultat.degats());
+        assertEquals("Ça n'a aucun effet.", resultat.message());
+    }
+
+    @Test
+    void chargeDeSalamecheNaPasDeBonusDeType() {
+        ResultatAttaque resultat = degats.calculer(SALAMECHE, CHARGE, BULBIZARRE);
+
+        assertEquals(40, resultat.degats());
+        assertEquals("Attaque normale.", resultat.message());
+    }
+
+    @Test
+    void cruAilesDeDracaufeuALeBonusGraceASonSecondType() {
+        ResultatAttaque resultat = degats.calculer(DRACAUFEU, CRU_AILES, BULBIZARRE);
+
+        assertEquals(180, resultat.degats());
+        assertEquals("C'est super efficace !", resultat.message());
+    }
+
+    @Test
+    void mimiQueueEstUneAttaqueDeStatutSansDegats() {
+        ResultatAttaque resultat = degats.calculer(RATTATA, MIMI_QUEUE, PIKACHU);
+
+        assertEquals(0, resultat.degats());
+        assertEquals("Attaque de statut : aucun dégât.", resultat.message());
     }
 }
