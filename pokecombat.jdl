@@ -1,0 +1,20 @@
+application {
+  config {
+    baseName pokecombat
+    applicationType monolith
+    packageName fr.zenika.pokecombat
+    authenticationType jwt
+    clientFramework angular
+    buildTool maven
+    prodDatabaseType postgresql
+  }
+  entities *
+}
+
+entity HistoriqueCombat {
+  pokemonGauche String required
+  pokemonDroite String required
+  vainqueur String required
+  tours Integer required
+  date Instant required
+}

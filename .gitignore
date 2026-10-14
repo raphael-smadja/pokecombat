@@ -1,0 +1,7 @@
+target/
+.idea/
+*.iml
+.vscode/
+.DS_Store
+.claude/settings.local.json
+rapport-du-professeur.md
