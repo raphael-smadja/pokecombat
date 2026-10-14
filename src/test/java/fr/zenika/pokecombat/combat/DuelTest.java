@@ -32,4 +32,15 @@ class DuelTest {
 
         assertNotNull(resultat);
     }
+
+    // --- Poké Balls ---
+
+    @Test
+    void duelMiroirLaGaucheCommenceEtGagneEnQuatreTours() {
+        ResultatDuel resultat = duel.combattre(
+                new Combattant(SALAMECHE, FLAMMECHE), new Combattant(SALAMECHE, FLAMMECHE));
+
+        assertEquals(Vainqueur.GAUCHE, resultat.vainqueur());
+        assertEquals(4, resultat.tours());
+    }
 }
