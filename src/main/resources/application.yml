@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: pokecombat
+  cache:
+    type: simple
+
+pokecombat:
+  pokeapi:
+    url: https://pokeapi.co/api/v2
+  # Charge au démarrage les Pokémon et attaques de la démo dans le cache
+  prechauffage: true

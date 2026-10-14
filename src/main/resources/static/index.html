@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pokécombat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <div class="pokeball" aria-hidden="true"></div>
+    <h1>Pokécombat</h1>
+    <p>Choisis deux Pokémon et une attaque chacun. PokeAPI fournit les données, notre code applique les règles.</p>
+</header>
+
+<main>
+    <section class="scenarios" aria-label="Duels de référence">
+        <span>Duels de référence :</span>
+        <button data-scenario="nominal">Salamèche vs Bulbizarre</button>
+        <button data-scenario="miroir">Duel miroir</button>
+        <button data-scenario="quadruple">Pikachu vs Léviator</button>
+        <button data-scenario="immunite">Pikachu vs Racaillou</button>
+        <button data-scenario="nul">Rattata vs Fantominus</button>
+    </section>
+
+    <section class="arene">
+        <article class="dresseur" id="gauche">
+            <h2>Gauche</h2>
+            <label>Pokémon <input list="liste-pokemons" class="choix-pokemon" placeholder="sala…" autocomplete="off"></label>
+            <label>Attaque <select class="choix-attaque" disabled><option>—</option></select></label>
+            <div class="fiche">
+                <img class="sprite" alt="">
+                <div class="types"></div>
+                <div class="pv"><div class="barre"><div class="jauge"></div></div><span class="pv-texte"></span></div>
+            </div>
+        </article>
+
+        <div class="centre">
+            <button id="combattre" disabled>Combattre !</button>
+            <div id="vainqueur" role="status"></div>
+        </div>
+
+        <article class="dresseur" id="droite">
+            <h2>Droite</h2>
+            <label>Pokémon <input list="liste-pokemons" class="choix-pokemon" placeholder="bulbi…" autocomplete="off"></label>
+            <label>Attaque <select class="choix-attaque" disabled><option>—</option></select></label>
+            <div class="fiche">
+                <img class="sprite" alt="">
+                <div class="types"></div>
+                <div class="pv"><div class="barre"><div class="jauge"></div></div><span class="pv-texte"></span></div>
+            </div>
+        </article>
+    </section>
+
+    <section class="journal">
+        <h2>Journal de combat</h2>
+        <ol id="journal"></ol>
+    </section>
+</main>
+
+<datalist id="liste-pokemons"></datalist>
+<script src="app.js"></script>
+</body>
+</html>
